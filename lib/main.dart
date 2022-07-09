@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_list_screen.dart';
 
-import 'constants/data.dart';
-
 void main() {
   runApp(const MyApp());
 }
@@ -17,9 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TodoListScreen(
-        todoList: todoList, // 親から子供へパラメータの受け渡し方
-      ),
+      home: const TodoListScreen(),
     );
   }
 }

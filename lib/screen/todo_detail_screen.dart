@@ -20,36 +20,41 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(
-          vertical: 30, // 垂直方向に余白
+          // vertical: 30, // 垂直方向に余白
           horizontal: 30,
         ),
         child: Center(
-          child: Column(
-            children: [
-              TextField(
-                enabled: false, // 非活性
-                controller:
-                    TextEditingController(text: widget.todoDetail.title),
-                decoration: const InputDecoration(
-                  // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
-                  labelText: 'タイトル',
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  enabled: false, // 非活性
+                  controller:
+                      TextEditingController(text: widget.todoDetail.title),
+                  decoration: const InputDecoration(
+                    // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
+                    labelText: 'タイトル',
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                enabled: false,
-                // 複数行表示
-                // https://minpro.net/flutter-dart-textfield-fold
-                maxLines: null,
-                controller:
-                    TextEditingController(text: widget.todoDetail.content),
-                decoration: const InputDecoration(
-                  labelText: '内容',
+                const SizedBox(
+                  height: 50,
                 ),
-              )
-            ],
+                TextFormField(
+                  enabled: false,
+                  // 複数行表示
+                  // https://minpro.net/flutter-dart-textfield-fold
+                  maxLines: null,
+                  controller:
+                      TextEditingController(text: widget.todoDetail.content),
+                  decoration: const InputDecoration(
+                    labelText: '内容',
+                  ),
+                ),
+                const SizedBox(
+                  height: 160,
+                )
+              ],
+            ),
           ),
         ),
       ),

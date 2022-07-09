@@ -26,58 +26,62 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(
-          vertical: 30, // 垂直方向に余白
+          // vertical: 30, // 垂直方向に余白
           horizontal: 30,
         ),
         child: Center(
-          child: Column(
-            children: [
-              TextField(
-                // enabled: false, // 非活性
-                controller: titleController,
-                decoration: const InputDecoration(
-                  // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
-                  labelText: 'タイトル',
-                ),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              TextFormField(
-                // enabled: false,
-                // 複数行表示
-                // https://minpro.net/flutter-dart-textfield-fold
-                maxLines: null,
-                controller: contentsController,
-                decoration: const InputDecoration(
-                  labelText: '内容',
-                ),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              SizedBox(
-                width: 200,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    // ボタンにまるみをつける
-                    // https://www.choge-blog.com/programming/flutterelevatedbutton-rounded/
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+          // https://note.com/hatchoutschool/n/na448cb31dd3a
+          child: SingleChildScrollView(
+            reverse: true,
+            child: Column(
+              children: [
+                TextField(
+                  // enabled: false, // 非活性
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
+                    labelText: 'タイトル',
                   ),
-                  child: const Text(
-                    '更新',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onPressed: () {},
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 50,
+                ),
+                TextFormField(
+                  // enabled: false,
+                  // 複数行表示
+                  // https://minpro.net/flutter-dart-textfield-fold
+                  maxLines: null,
+                  controller: contentsController,
+                  decoration: const InputDecoration(
+                    labelText: '内容',
+                  ),
+                ),
+                const SizedBox(
+                  height: 100,
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      // ボタンにまるみをつける
+                      // https://www.choge-blog.com/programming/flutterelevatedbutton-rounded/
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text(
+                      '更新',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    onPressed: () {},
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

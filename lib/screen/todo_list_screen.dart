@@ -3,18 +3,16 @@ import 'package:flutter_stf_todo_sample/constants/data.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_detail_screen.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_update_screen.dart';
 
-import '../model/todo_model.dart';
-
 class TodoListScreen extends StatefulWidget {
-  final List<Todo> todoList; // 上位widgetから受け取りたいデータ
-  const TodoListScreen({Key? key, required this.todoList})
-      : super(key: key); // コンストラクタ
+  const TodoListScreen({Key? key}) : super(key: key); // コンストラクタ
 
   @override
   State<TodoListScreen> createState() => _TodoListScreenState();
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
+  final _todoList = todoList;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +26,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
         child: ListView.builder(
           // ListView.builderで一覧表示できる
           // https://www.flutter-study.dev/widgets/list-view-widget
-          itemCount: widget.todoList.length, // widget.~で親から受け取ったパラメータを使用できる
+          itemCount: _todoList.length, // widget.~で親から受け取ったパラメータを使用できる
           itemBuilder: (context, index) {
+            final todo = _todoList[index];
+
             return Center(
               // 中央寄せ
               child: Container(
@@ -53,7 +53,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       child: Container(
                         padding: const EdgeInsets.only(left: 20),
                         child: Text(
-                          widget.todoList[index].title,
+                          todo.title,
                           // 1行で表示させたい場合
                           // https://blog.pentagon.tokyo/138/
                           maxLines: 1,
@@ -77,8 +77,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => TodoDetailScreen(
-                                        todoDetail: todoList[index]),
+                                    builder: (context) =>
+                                        TodoDetailScreen(todoDetail: todo),
                                   ),
                                 );
                               },
@@ -92,8 +92,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => TodoUpdateScreen(
-                                        todoDetail: todoList[index]),
+                                    builder: (context) =>
+                                        TodoUpdateScreen(todoDetail: todo),
                                   ),
                                 );
                               },
