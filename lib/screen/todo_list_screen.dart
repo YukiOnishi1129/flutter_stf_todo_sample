@@ -31,34 +31,64 @@ class _TodoListScreenState extends State<TodoListScreen> {
               // 中央寄せ
               child: Container(
                 width: 350,
-                height: 50,
+                height: 60,
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(10),
                 // Containerにdecoration
                 // https://note.com/hatchoutschool/n/na227e7035f3d
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(width: 1),
-                    borderRadius: BorderRadius.circular(20.0)),
+                  color: Colors.white,
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween, // 左右の位置調整(flexboxみたいなの)
+                  crossAxisAlignment: CrossAxisAlignment.center, // 上下の位置調整
                   children: <Widget>[
-                    Text(widget.todoList[index].title, style: TextStyle()),
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.description),
-                          onPressed: () {},
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          widget.todoList[index].title,
+                          // 1行で表示させたい場合
+                          // https://blog.pentagon.tokyo/138/
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {},
-                        )
-                      ],
+                      ),
+                    ),
+                    Container(
+                      // padding: const EdgeInsets.only(right: 20),
+                      width: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 40,
+                            child: IconButton(
+                              icon: const Icon(Icons.description),
+                              onPressed: () {},
+                            ),
+                          ),
+                          SizedBox(
+                            width: 40,
+                            child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {},
+                            ),
+                          ),
+                          SizedBox(
+                            width: 40,
+                            child: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {},
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
