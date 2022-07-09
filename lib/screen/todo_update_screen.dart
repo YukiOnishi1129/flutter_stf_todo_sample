@@ -12,14 +12,29 @@ class TodoUpdateScreen extends StatefulWidget {
 }
 
 class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
+  //  入力値の定義
+  late TextEditingController _titleController;
+  late TextEditingController _contentsController;
+
+  // コントローラーの初期化
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.todoDetail.title);
+    _contentsController =
+        TextEditingController(text: widget.todoDetail.content);
+  }
+
+  // statefulオブジェクトが削除されるときに、参照を削除してくれる
+  @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+    _contentsController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //  入力値の定義
-    final TextEditingController titleController =
-        TextEditingController(text: widget.todoDetail.title);
-    final TextEditingController contentsController =
-        TextEditingController(text: widget.todoDetail.content);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('編集'),
@@ -37,7 +52,7 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
               children: [
                 TextField(
                   // enabled: false, // 非活性
-                  controller: titleController,
+                  controller: _titleController,
                   decoration: const InputDecoration(
                     // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
                     labelText: 'タイトル',
@@ -51,7 +66,7 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
                   // 複数行表示
                   // https://minpro.net/flutter-dart-textfield-fold
                   maxLines: null,
-                  controller: contentsController,
+                  controller: _contentsController,
                   decoration: const InputDecoration(
                     labelText: '内容',
                   ),
