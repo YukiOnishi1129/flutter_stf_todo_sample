@@ -4,7 +4,12 @@ final List<Todo> todoList = [
   Todo(
     '1',
     'Todo111111111111111',
-    'todo content1',
+    // 複数行テキストを表示
+    // https://note.com/_hi/n/n805374ac4ab4
+    '''todo content1 
+    todo content1 
+    todo content1 todo content1 
+    todo content1 todo content1 todo content1 todo content1 todo content1 todo content1 todo content1 todo content1 todo content1 ''',
     DateTime.now(),
     DateTime.now(),
   ),
