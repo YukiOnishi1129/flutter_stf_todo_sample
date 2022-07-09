@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stf_todo_sample/constants/data.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_detail_screen.dart';
+import 'package:flutter_stf_todo_sample/screen/todo_update_screen.dart';
 
 import '../model/todo_model.dart';
 
@@ -87,7 +88,15 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TodoUpdateScreen(
+                                        todoDetail: todoList[index]),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           SizedBox(
