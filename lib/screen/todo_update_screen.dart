@@ -17,6 +17,7 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
   // https://qiita.com/nukotsuka/items/66236723bf17c4574608
   late TextEditingController _titleController;
   late TextEditingController _contentsController;
+  bool isDisabled = true;
 
   // コントローラーの初期化
   // https://qiita.com/pe-ta/items/b3b7458059c1fd7efcf0
@@ -34,6 +35,11 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
     super.dispose();
     _titleController.dispose();
     _contentsController.dispose();
+  }
+
+  bool isEnabledUpdate() {
+    return widget.todoDetail.title != _titleController.text ||
+        widget.todoDetail.content != _contentsController.text;
   }
 
   @override
@@ -54,13 +60,18 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
             child: Column(
               children: [
                 TextField(
-                  // enabled: false, // 非活性
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
-                    labelText: 'タイトル',
-                  ),
-                ),
+                    // enabled: false, // 非活性
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      // https://qiita.com/sekitaka_1214/items/17cccc94a9e7150cdf3a
+                      labelText: 'タイトル',
+                    ),
+                    onChanged: (inputValue) {
+                      setState(() {
+                        isDisabled = inputValue.isEmpty ||
+                            inputValue == widget.todoDetail.title;
+                      });
+                    }),
                 const SizedBox(
                   height: 50,
                 ),
@@ -73,6 +84,12 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
                   decoration: const InputDecoration(
                     labelText: '内容',
                   ),
+                  onChanged: (inputValue) {
+                    setState(() {
+                      isDisabled = inputValue.isEmpty ||
+                          inputValue == widget.todoDetail.content;
+                    });
+                  },
                 ),
                 const SizedBox(
                   height: 100,
@@ -88,6 +105,20 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                    onPressed: isDisabled
+                        ? null
+                        : () {
+                            final Todo updateTodo = Todo(
+                              widget.todoDetail.id,
+                              _titleController.text,
+                              _contentsController.text,
+                              widget.todoDetail.createdAt,
+                              DateTime.now(),
+                            );
+                            // popで前の画面に戻る
+                            // popの引数から前の画面にデータを渡す
+                            Navigator.of(context).pop(updateTodo);
+                          },
                     child: const Text(
                       '更新',
                       style: TextStyle(
@@ -95,18 +126,6 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {
-                      final Todo updateTodo = Todo(
-                        widget.todoDetail.id,
-                        _titleController.text,
-                        _contentsController.text,
-                        widget.todoDetail.createdAt,
-                        DateTime.now(),
-                      );
-                      // popで前の画面に戻る
-                      // popの引数から前の画面にデータを渡す
-                      Navigator.of(context).pop(updateTodo);
-                    },
                   ),
                 )
               ],
