@@ -85,10 +85,26 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   /*
-  * 削除処理
+  * 削除アイコン
   */
-  void _handleDeleteTodo({required Todo targetTodo}) {
+  void _handleClickDeleteIcon(
+      {required BuildContext context, required Todo targetTodo}) {
     // 削除処理を実行
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialogComponent(
+            executeFunc: () => _handleDeleteTodo(targetTodo: targetTodo),
+            showTitle: 'Todoを削除します。',
+            showContext: targetTodo.title);
+      },
+    );
+  }
+
+  void _handleDeleteTodo({required Todo targetTodo}) {
+    setState(() {
+      _todoList = _todoList.where((todo) => todo.id != targetTodo.id).toList();
+    });
   }
 
   @override
@@ -170,8 +186,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.delete),
-                              onPressed: () =>
-                                  _handleDeleteTodo(targetTodo: todo),
+                              onPressed: () => _handleClickDeleteIcon(
+                                context: context,
+                                targetTodo: todo,
+                              ),
                             ),
                           )
                         ],
@@ -190,6 +208,41 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
         onPressed: () => _handleTransitionCreateScreen(),
       ),
+    );
+  }
+}
+
+class AlertDialogComponent extends StatelessWidget {
+  final Function executeFunc;
+  final String showTitle;
+  final String showContext;
+  const AlertDialogComponent(
+      {Key? key,
+      required this.executeFunc,
+      this.showTitle = "",
+      this.showContext = ""})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: showTitle.isEmpty ? null : Text(showTitle),
+      content: showContext.isEmpty ? null : Text('タイトル: $showContext'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('キャンセル'),
+        ),
+        TextButton(
+          onPressed: () {
+            executeFunc();
+            Navigator.of(context).pop();
+          },
+          child: const Text('削除'),
+        ),
+      ],
     );
   }
 }
