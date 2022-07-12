@@ -15,6 +15,60 @@ class TodoListScreen extends StatefulWidget {
 class _TodoListScreenState extends State<TodoListScreen> {
   List<Todo> _todoList = todoList;
 
+  /*
+  * 作成画面へ遷移処理
+  */
+  void _handleTransitionCreateScreen() {
+    // 作成画面へ遷移
+  }
+
+  /*
+  * 詳細画面へ遷移処理
+  */
+  void _handleTransitionDetailScreen({required Todo targetTodo}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TodoDetailScreen(todoDetail: targetTodo),
+      ),
+    );
+  }
+
+  /*
+  * 更新画面へ遷移
+  * (更新画面で更新処理を実施した際に、値を更新する)
+  */
+  Future<void> _handleTransitionUpdateScreen({required Todo targetTodo}) async {
+    try {
+      final Todo updatedTodo = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              TodoUpdateScreen(todoDetail: targetTodo), // 更新画面に遷移
+        ),
+      );
+      // 更新画面で更新処理を実施した際に、渡ってきた更新データを元にtodoListを更新
+      // Todoの内容を更新
+      setState(() {
+        _todoList = _todoList.map((todo) {
+          if (todo.id == updatedTodo.id) {
+            return updatedTodo;
+          }
+          return todo;
+        }).toList();
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  /*
+  * 削除処理
+  */
+  void _handleDeleteTodo({required Todo targetTodo}) {
+    // 削除処理を実行
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,15 +130,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.description),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        TodoDetailScreen(todoDetail: todo),
-                                  ),
-                                );
-                              },
+                              onPressed: () => _handleTransitionDetailScreen(
+                                  targetTodo: todo),
                             ),
                           ),
                           // 更新画面へ
@@ -92,28 +139,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () async {
-                                try {
-                                  final Todo updatedTodo = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          TodoUpdateScreen(todoDetail: todo),
-                                    ),
-                                  );
-                                  // Todoの内容を更新
-                                  setState(() {
-                                    _todoList = _todoList.map((todo) {
-                                      if (todo.id == updatedTodo.id) {
-                                        return updatedTodo;
-                                      }
-                                      return todo;
-                                    }).toList();
-                                  });
-                                } catch (e) {
-                                  throw Exception(e.toString());
-                                }
-                              },
+                              onPressed: () => _handleTransitionUpdateScreen(
+                                  targetTodo: todo),
                             ),
                           ),
                           // 削除処理
@@ -121,7 +148,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.delete),
-                              onPressed: () {},
+                              onPressed: () =>
+                                  _handleDeleteTodo(targetTodo: todo),
                             ),
                           )
                         ],
@@ -138,7 +166,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         child: const Icon(
           Icons.add,
         ),
-        onPressed: () {},
+        onPressed: () => _handleTransitionCreateScreen(),
       ),
     );
   }
