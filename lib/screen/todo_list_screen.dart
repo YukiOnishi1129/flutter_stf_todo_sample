@@ -32,11 +32,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
       );
       // 新規Todoを追加
+      _todoList.add(createdTodo);
+      // 作成日の降順にソート
+      // _todoList.sort((prev, next) => -prev.createdAt.compareTo(next.createdAt));
       setState(() {
         // 配列のコピーを作成
         // https://www.choge-blog.com/programming/dart%E3%83%AA%E3%82%B9%E3%83%88list%E3%82%92%E3%82%B3%E3%83%94%E3%83%BC%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
         // final newTodoList = List.of(_todoList);
-        _todoList.add(createdTodo);
+        _todoList;
         _currentLastId = int.parse(createdTodo.id);
       });
     } catch (e) {
@@ -85,7 +88,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   /*
-  * 削除アイコン
+  * 削除アイコンクリック処理
   */
   void _handleClickDeleteIcon(
       {required BuildContext context, required Todo targetTodo}) {
@@ -101,14 +104,24 @@ class _TodoListScreenState extends State<TodoListScreen> {
     );
   }
 
+  /*
+  * Todo削除処理
+  */
   void _handleDeleteTodo({required Todo targetTodo}) {
     setState(() {
+      // Dartでfilterするときはwhereを使う
+      // https://www.choge-blog.com/programming/dart%E3%83%AA%E3%82%B9%E3%83%88list%E3%81%AB%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BCfilter%E5%87%A6%E7%90%86%E3%82%92%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
       _todoList = _todoList.where((todo) => todo.id != targetTodo.id).toList();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // ソート
+    // https://www.choge-blog.com/programming/dart%E3%83%AA%E3%82%B9%E3%83%88list%E3%82%92%E4%B8%A6%E3%81%B3%E6%9B%BF%E3%81%88%E3%82%8B%E6%96%B9%E6%B3%95/
+    // 作成日の降順にソート
+    _todoList.sort((prev, next) => -prev.createdAt.compareTo(next.createdAt));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('STF TODO'),
