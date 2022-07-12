@@ -37,22 +37,34 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
     _contentsController.dispose();
   }
 
+  /*
+  * タイトル入力処理
+  */
   void _handleTitleInputValue(String inputValue) {
     setState(() {
-      disabled = inputValue.isEmpty || inputValue == widget.todoDetail.title;
+      disabled = inputValue.isEmpty ||
+          _contentsController.text.isEmpty ||
+          (inputValue == widget.todoDetail.title &&
+              _contentsController.text == widget.todoDetail.title);
     });
   }
 
+  /*
+  * 内容入力処理
+  */
   void _handleContentInputValue(String inputValue) {
     setState(() {
-      disabled = inputValue.isEmpty || inputValue == widget.todoDetail.content;
+      disabled = inputValue.isEmpty ||
+          _titleController.text.isEmpty ||
+          (inputValue == widget.todoDetail.content &&
+              _titleController.text == widget.todoDetail.title);
+      ;
     });
   }
 
-  dynamic _handleUpdate(BuildContext context) {
-    return disabled ? null : () => _submitUpdateTodo(context);
-  }
-
+  /*
+  * Todo更新処理
+  */
   void _submitUpdateTodo(BuildContext context) {
     // popで前の画面に戻る
     // popの引数から前の画面にデータを渡す
@@ -65,6 +77,13 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
         DateTime.now(),
       ),
     );
+  }
+
+  /*
+  * 更新ボタンクリック時の処理
+  */
+  dynamic _handleUpdate(BuildContext context) {
+    return disabled ? null : () => _submitUpdateTodo(context);
   }
 
   @override
