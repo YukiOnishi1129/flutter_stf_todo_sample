@@ -3,6 +3,8 @@ import 'package:flutter_stf_todo_sample/constants/data.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_detail_screen.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_update_screen.dart';
 
+import '../model/todo_model.dart';
+
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({Key? key}) : super(key: key); // コンストラクタ
 
@@ -11,7 +13,7 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  final _todoList = todoList;
+  List<Todo> _todoList = todoList;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          // 詳細画面へ
                           SizedBox(
                             width: 40,
                             child: IconButton(
@@ -84,21 +87,36 @@ class _TodoListScreenState extends State<TodoListScreen> {
                               },
                             ),
                           ),
+                          // 更新画面へ
                           SizedBox(
                             width: 40,
                             child: IconButton(
                               icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        TodoUpdateScreen(todoDetail: todo),
-                                  ),
-                                );
+                              onPressed: () async {
+                                try {
+                                  final Todo updatedTodo = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          TodoUpdateScreen(todoDetail: todo),
+                                    ),
+                                  );
+                                  // Todoの内容を更新
+                                  setState(() {
+                                    _todoList = _todoList.map((todo) {
+                                      if (todo.id == updatedTodo.id) {
+                                        return updatedTodo;
+                                      }
+                                      return todo;
+                                    }).toList();
+                                  });
+                                } catch (e) {
+                                  throw Exception(e.toString());
+                                }
                               },
                             ),
                           ),
+                          // 削除処理
                           SizedBox(
                             width: 40,
                             child: IconButton(

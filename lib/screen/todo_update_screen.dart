@@ -13,10 +13,13 @@ class TodoUpdateScreen extends StatefulWidget {
 
 class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
   //  入力値の定義
+  // late: 遅延初期化
+  // https://qiita.com/nukotsuka/items/66236723bf17c4574608
   late TextEditingController _titleController;
   late TextEditingController _contentsController;
 
   // コントローラーの初期化
+  // https://qiita.com/pe-ta/items/b3b7458059c1fd7efcf0
   @override
   void initState() {
     super.initState();
@@ -92,7 +95,18 @@ class _TodoUpdateScreenState extends State<TodoUpdateScreen> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      final Todo updateTodo = Todo(
+                        widget.todoDetail.id,
+                        _titleController.text,
+                        _contentsController.text,
+                        widget.todoDetail.createdAt,
+                        DateTime.now(),
+                      );
+                      // popで前の画面に戻る
+                      // popの引数から前の画面にデータを渡す
+                      Navigator.of(context).pop(updateTodo);
+                    },
                   ),
                 )
               ],
