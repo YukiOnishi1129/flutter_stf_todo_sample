@@ -15,18 +15,33 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   List<Todo> _todoList = todoList;
+  int _currentLastId = initialLastId;
 
   /*
   * 作成画面へ遷移処理
   */
-  void _handleTransitionCreateScreen() {
-    // 作成画面へ遷移
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const TodoCreateScreen(),
-      ),
-    );
+  void _handleTransitionCreateScreen() async {
+    try {
+      // 作成画面へ遷移
+      final Todo createdTodo = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TodoCreateScreen(
+            lastId: _currentLastId,
+          ),
+        ),
+      );
+      // 新規Todoを追加
+      setState(() {
+        // 配列のコピーを作成
+        // https://www.choge-blog.com/programming/dart%E3%83%AA%E3%82%B9%E3%83%88list%E3%82%92%E3%82%B3%E3%83%94%E3%83%BC%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95/
+        // final newTodoList = List.of(_todoList);
+        _todoList.add(createdTodo);
+        _currentLastId = int.parse(createdTodo.id);
+      });
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   /*

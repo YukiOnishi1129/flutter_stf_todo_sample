@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../model/todo_model.dart';
+
 class TodoCreateScreen extends StatefulWidget {
-  const TodoCreateScreen({Key? key}) : super(key: key);
+  final int lastId;
+  const TodoCreateScreen({Key? key, required this.lastId}) : super(key: key);
 
   @override
   State<TodoCreateScreen> createState() => _TodoCreateScreenState();
@@ -27,6 +30,28 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
     _contentsController.dispose();
   }
 
+  void _handleTitleInputValue(String inputValue) {
+    setState(() {
+      disabled = inputValue.isEmpty;
+    });
+  }
+
+  void _handleContentInputValue(String inputValue) {
+    setState(() {
+      disabled = inputValue.isEmpty;
+    });
+  }
+
+  void _submitCreateTodo(BuildContext context) {
+    Navigator.of(context).pop(Todo(
+      (widget.lastId + 1).toString(),
+      _titleController.text,
+      _contentsController.text,
+      DateTime.now(),
+      DateTime.now(),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +73,7 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
                   decoration: const InputDecoration(
                     labelText: 'タイトル',
                   ),
-                  // onChanged: () {},
+                  onChanged: _handleTitleInputValue,
                 ),
                 const SizedBox(
                   height: 50,
@@ -59,7 +84,7 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
                   decoration: const InputDecoration(
                     labelText: '内容',
                   ),
-                  // onChanged: ,
+                  onChanged: _handleContentInputValue,
                 ),
                 const SizedBox(
                   height: 100,
@@ -73,7 +98,7 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () => _submitCreateTodo(context),
                     child: const Text(
                       '作成',
                       style: TextStyle(

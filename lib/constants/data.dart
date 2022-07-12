@@ -95,3 +95,5 @@ final List<Todo> todoList = [
     DateTime.now(),
   ),
 ];
+
+const int initialLastId = 12;
