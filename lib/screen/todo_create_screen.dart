@@ -30,18 +30,27 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
     _contentsController.dispose();
   }
 
+  /*
+  * タイトル入力処理
+  */
   void _handleTitleInputValue(String inputValue) {
     setState(() {
-      disabled = inputValue.isEmpty;
+      disabled = inputValue.isEmpty || _contentsController.text.isEmpty;
     });
   }
 
+  /*
+  * 内容入力処理
+  */
   void _handleContentInputValue(String inputValue) {
     setState(() {
-      disabled = inputValue.isEmpty;
+      disabled = inputValue.isEmpty || _titleController.text.isEmpty;
     });
   }
 
+  /*
+  * Todo作成処理
+  */
   void _submitCreateTodo(BuildContext context) {
     Navigator.of(context).pop(Todo(
       (widget.lastId + 1).toString(),
@@ -50,6 +59,13 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
       DateTime.now(),
       DateTime.now(),
     ));
+  }
+
+  /*
+  * 作成ボタンクリック時の処理
+  */
+  dynamic _handleCreate(BuildContext context) {
+    return disabled ? null : () => _submitCreateTodo(context);
   }
 
   @override
@@ -98,7 +114,7 @@ class _TodoCreateScreenState extends State<TodoCreateScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () => _submitCreateTodo(context),
+                    onPressed: _handleCreate(context),
                     child: const Text(
                       '作成',
                       style: TextStyle(
