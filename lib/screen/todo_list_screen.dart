@@ -4,6 +4,7 @@ import 'package:flutter_stf_todo_sample/screen/todo_create_screen.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_detail_screen.dart';
 import 'package:flutter_stf_todo_sample/screen/todo_update_screen.dart';
 
+import '../components/alert_modal.dart';
 import '../model/todo_model.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -96,7 +97,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     showDialog(
       context: context,
       builder: (_) {
-        return AlertDialogComponent(
+        return AlertModal(
             executeFunc: () => _handleDeleteTodo(targetTodo: targetTodo),
             showTitle: 'Todoを削除します。',
             showContext: targetTodo.title);
@@ -221,41 +222,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
         onPressed: () => _handleTransitionCreateScreen(),
       ),
-    );
-  }
-}
-
-class AlertDialogComponent extends StatelessWidget {
-  final Function executeFunc;
-  final String showTitle;
-  final String showContext;
-  const AlertDialogComponent(
-      {Key? key,
-      required this.executeFunc,
-      this.showTitle = "",
-      this.showContext = ""})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: showTitle.isEmpty ? null : Text(showTitle),
-      content: showContext.isEmpty ? null : Text('タイトル: $showContext'),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('キャンセル'),
-        ),
-        TextButton(
-          onPressed: () {
-            executeFunc();
-            Navigator.of(context).pop();
-          },
-          child: const Text('削除'),
-        ),
-      ],
     );
   }
 }
