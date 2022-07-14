@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/todo_model.dart';
+import '../../commons/atoms/common_button.dart';
 import '../../layouts/detail_base_body_layout.dart';
 
 class TodoUpdateTemplate extends StatefulWidget {
@@ -66,7 +67,7 @@ class _TodoUpdateTemplateState extends State<TodoUpdateTemplate> {
   /*
   * Todo更新処理
   */
-  void _submitUpdateTodo(BuildContext context) {
+  void _submitUpdateTodo() {
     // popで前の画面に戻る
     // popの引数から前の画面にデータを渡す
     Navigator.of(context).pop(
@@ -78,13 +79,6 @@ class _TodoUpdateTemplateState extends State<TodoUpdateTemplate> {
         DateTime.now(),
       ),
     );
-  }
-
-  /*
-  * 更新ボタンクリック時の処理
-  */
-  dynamic _handleUpdate(BuildContext context) {
-    return disabled ? null : () => _submitUpdateTodo(context);
   }
 
   @override
@@ -122,27 +116,11 @@ class _TodoUpdateTemplateState extends State<TodoUpdateTemplate> {
             const SizedBox(
               height: 100,
             ),
-            SizedBox(
-              width: 200,
-              height: 60,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  // ボタンにまるみをつける
-                  // https://www.choge-blog.com/programming/flutterelevatedbutton-rounded/
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: _handleUpdate(context),
-                child: const Text(
-                  '更新',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            )
+            CommonButton(
+              disabled: disabled,
+              label: '更新',
+              handlePress: _submitUpdateTodo,
+            ),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/todo_model.dart';
+import '../../commons/atoms/common_button.dart';
 import '../../layouts/detail_base_body_layout.dart';
 
 class TodoCreateTemplate extends StatefulWidget {
@@ -52,7 +53,7 @@ class _TodoCreateTemplateState extends State<TodoCreateTemplate> {
   /*
   * Todo作成処理
   */
-  void _submitCreateTodo(BuildContext context) {
+  void _submitCreateTodo() {
     Navigator.of(context).pop(Todo(
       (widget.lastId + 1).toString(),
       _titleController.text,
@@ -60,13 +61,6 @@ class _TodoCreateTemplateState extends State<TodoCreateTemplate> {
       DateTime.now(),
       DateTime.now(),
     ));
-  }
-
-  /*
-  * 作成ボタンクリック時の処理
-  */
-  dynamic _handleCreate(BuildContext context) {
-    return disabled ? null : () => _submitCreateTodo(context);
   }
 
   @override
@@ -99,25 +93,11 @@ class _TodoCreateTemplateState extends State<TodoCreateTemplate> {
             const SizedBox(
               height: 100,
             ),
-            SizedBox(
-              width: 200,
-              height: 60,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: _handleCreate(context),
-                child: const Text(
-                  '作成',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            )
+            CommonButton(
+              disabled: disabled,
+              label: '作成',
+              handlePress: _submitCreateTodo,
+            ),
           ],
         ),
       ),
