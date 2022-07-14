@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../commons/atoms/common_icon_button.dart';
+
 class TodoItem extends StatelessWidget {
   final String title;
   final GestureTapCallback handlePressDetail;
@@ -42,29 +44,14 @@ class TodoItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               // 詳細画面へ
-              SizedBox(
-                width: 40,
-                child: IconButton(
-                  icon: const Icon(Icons.description),
-                  onPressed: handlePressDetail,
-                ),
-              ),
+              CommonIconButton(
+                  icon: Icons.description, handlePress: handlePressDetail),
               // 更新画面へ
-              SizedBox(
-                width: 40,
-                child: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: handlePressUpdate,
-                ),
-              ),
+              CommonIconButton(
+                  icon: Icons.edit, handlePress: handlePressUpdate),
               // 削除処理
-              SizedBox(
-                width: 40,
-                child: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: handlePressDelete,
-                ),
-              )
+              CommonIconButton(
+                  icon: Icons.delete, handlePress: handlePressDelete),
             ],
           ),
         )
